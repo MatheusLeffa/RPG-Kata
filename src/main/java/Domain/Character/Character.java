@@ -1,6 +1,7 @@
 package Domain.Character;
 
 import Exceptions.AttackException;
+import Repositories.FactionRepository;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -27,6 +28,9 @@ public class Character {
         if (target == this) {
             throw new AttackException("The character cannot attack itself.");
         }
+        if (FactionRepository.isAlly(this, target)) {
+            throw new AttackException("The character cannot attack an ally.");
+        }
         if (!target.isAlive) {
             throw new AttackException("The target is dead.");
         }
@@ -43,11 +47,11 @@ public class Character {
         }
     }
 
-    public void heal(Character character, int heal) {
-        if (character == this) {
-            character.health += heal;
-            if (character.health > 1000) {
-                character.health = 1000;
+    public void heal(Character target, int heal) {
+        if (FactionRepository.isAlly(this, target)) {
+            target.health += heal;
+            if (target.health > 1000) {
+                target.health = 1000;
             }
         }
     }

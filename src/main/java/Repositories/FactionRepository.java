@@ -1,5 +1,6 @@
 package Repositories;
 
+import Domain.Character.Character;
 import Domain.Faction.Faction;
 import Exceptions.FactionsRepositoryException;
 import lombok.Getter;
@@ -29,5 +30,14 @@ public class FactionRepository {
             }
         }
         throw new FactionsRepositoryException("Faction not found.");
+    }
+
+    public static boolean isAlly(Character sourceChar, Character targetChar) {
+        for (Faction faction : factions) {
+            if (faction.getMembers().contains(sourceChar) && faction.getMembers().contains(targetChar)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
